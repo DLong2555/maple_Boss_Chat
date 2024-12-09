@@ -8,6 +8,13 @@ import lombok.Getter;
 @Entity
 @Getter
 public class Member {
+
     @Id @GeneratedValue
     private Long id;
+    private String userEmail;
+    private String userPass;
+
+    private String apiKey;
+
+    private String nowCharName;
 }
