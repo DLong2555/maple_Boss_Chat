@@ -21,6 +21,7 @@ public class Member {
 
     @NotNull(message = "아이디: 필수 정보입니다.")
     @Email(message = "이메일 형식이 아닙니다.")
+    @Column(unique = true)
     private String userEmail;
 
     @NotNull(message = "비밀번호: 필수 정보입니다.")
