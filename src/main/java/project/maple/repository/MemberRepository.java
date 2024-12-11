@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("select m from Member m where m.userEmail = :email")
-    List<Member> findByEmail(@Param("email") String email);
+    Optional<Member> findByEmail(@Param("email") String email);
 
     @Query("select m from Member m where m.apiKey = :apiKey")
-    List<Member> findByApiKey(@Param("apiKey") String apiKey);
+    Optional<Member> findByApiKey(@Param("apiKey") String apiKey);
 }
