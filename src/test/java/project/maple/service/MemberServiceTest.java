@@ -8,6 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import project.maple.domain.Member;
+import project.maple.dto.LoginForm;
+import project.maple.dto.LoginRequestDto;
+import project.maple.exception.DuplicateMemberException;
 import project.maple.repository.MemberRepository;
 
 import java.util.Optional;
@@ -18,6 +21,9 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 class MemberServiceTest {
+
+    @Autowired
+    EntityManager em;
 
     @Autowired
     private MemberService memberService;
@@ -43,8 +49,11 @@ class MemberServiceTest {
         memberService.signUp(email1, password, api1);
 
         //then
-        assertThrows(IllegalStateException.class, () -> memberService.signUp(email1, password, api2));
-        assertThrows(IllegalStateException.class, () -> memberService.signUp(email2, password, api1));
+        // 이메일 중복 시 에러 발생 테스트
+        assertThrows(DuplicateMemberException.class, () -> memberService.signUp(email1, password, api2));
+
+        // api 중복 시 에러 발생 테스트
+        assertThrows(DuplicateMemberException.class, () -> memberService.signUp(email2, password, api1));
     }
 
     @Test
@@ -74,5 +83,37 @@ class MemberServiceTest {
 
         // api key 확인
         assertThat(member.getApiKey()).isEqualTo(findMember.getApiKey());
+    }
+
+    @Test
+    public void login_test() throws Exception {
+        //given
+        String id = "maxol2558@gmail.com";
+        String password = "zkzktl25@#";
+        String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
+
+        //when
+        memberService.signUp(id,password,apiKey);
+
+        em.flush();
+        em.clear();
+
+        //then
+        LoginForm loginForm = new LoginForm();
+        loginForm.setUserEmail(id);
+        loginForm.setPassword(password);
+
+        //로그인 성공시
+        LoginRequestDto result_success = memberService.login(loginForm);
+        assertTrue(result_success.isSuccess());
+
+        //없는 이메일일 시
+        loginForm.setUserEmail("");
+        assertThrows(IllegalStateException.class, () -> memberService.login(loginForm));
+
+        //비밀번호가 틀릴 시
+        loginForm.setUserEmail(id);
+        loginForm.setPassword("!234");
+        assertThrows(IllegalStateException.class, () -> memberService.login(loginForm));
     }
 }
