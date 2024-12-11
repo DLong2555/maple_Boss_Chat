@@ -35,7 +35,7 @@ public class MemberController {
 
         LoginRequestDto loginRequest = memberService.login(loginForm);
         if (loginRequest.isSuccess()){
-            session.setAttribute("logimUser", loginRequest.getMember());
+            session.setAttribute("loginUser", loginRequest.getMember());
 
             return "redirect:/";
         }
