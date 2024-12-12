@@ -32,11 +32,16 @@ public class Member {
     @Column(unique = true)
     private String apiKey;
 
-    private String nowCharName;
-
     public Member(String userEmail, String userPass, String apiKey) {
         this.userEmail = userEmail;
         this.userPass = userPass;
         this.apiKey = apiKey;
+    }
+
+    /*
+    id만 사용한 멤버 생성자
+     */
+    public Member(Long id) {
+        this.id = id;
     }
 }

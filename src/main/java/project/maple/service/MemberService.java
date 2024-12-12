@@ -66,4 +66,13 @@ public class MemberService {
 
         return new LoginRequestDto(true, "success", findMember);
     }
+
+    /*
+    이메일로 멤버 id 조회
+     */
+    public Long findMemberIdByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("해당 멤버를 찾을 수 없습니다."))
+                .getId();
+    }
 }
