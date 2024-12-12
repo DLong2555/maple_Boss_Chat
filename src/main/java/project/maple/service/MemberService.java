@@ -41,6 +41,9 @@ public class MemberService {
         return member.getId();
     }
 
+    /**
+     * 중복체크
+     */
     public boolean validateDuplicateMember(String field, String value) {
         if (field.equals("email")) {
             return memberRepository.findByEmail(value).isPresent();

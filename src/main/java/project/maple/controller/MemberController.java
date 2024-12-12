@@ -37,7 +37,7 @@ public class MemberController {
         if (loginRequest.isSuccess()){
             session.setAttribute("loginUser", loginRequest.getMember());
 
-            return "redirect:/";
+            return "redirect:/charters";
         }
 
         return "members/loginForm";
