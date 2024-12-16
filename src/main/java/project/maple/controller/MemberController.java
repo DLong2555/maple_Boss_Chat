@@ -1,6 +1,7 @@
 package project.maple.controller;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.http.parser.Cookie;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import project.maple.dto.LoginForm;
 import project.maple.dto.LoginRequestDto;
+import project.maple.dto.LoginSaveDto;
 import project.maple.repository.MemberRepository;
 import project.maple.service.MemberService;
 
@@ -27,7 +29,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(HttpSession session, LoginForm loginForm, BindingResult result) {
+    public String login(@Valid LoginForm loginForm, HttpSession session, BindingResult result) {
 
         if(result.hasErrors()) {
             return "login";
@@ -35,7 +37,7 @@ public class MemberController {
 
         LoginRequestDto loginRequest = memberService.login(loginForm);
         if (loginRequest.isSuccess()){
-            session.setAttribute("loginUser", loginRequest.getMember());
+            session.setAttribute("loginUser", loginRequest.getSaveDto());
 
             return "redirect:/characters";
         }

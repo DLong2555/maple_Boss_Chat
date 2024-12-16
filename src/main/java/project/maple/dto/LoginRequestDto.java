@@ -9,7 +9,6 @@ import project.maple.domain.Member;
 public class LoginRequestDto {
 
     private final boolean success;
-    private final String message;
-    private final Member member;
+    private final LoginSaveDto saveDto;
 
 }

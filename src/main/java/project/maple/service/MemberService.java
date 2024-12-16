@@ -1,19 +1,16 @@
 package project.maple.service;
 
-import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.maple.domain.Member;
 import project.maple.dto.LoginForm;
 import project.maple.dto.LoginRequestDto;
+import project.maple.dto.LoginSaveDto;
 import project.maple.exception.DuplicateMemberException;
 import project.maple.repository.MemberRepository;
 
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -65,7 +62,7 @@ public class MemberService {
             throw new IllegalStateException("이메일 또는 비밀번호가 잘못되었습니다.");
         }
 
-        return new LoginRequestDto(true, "success", findMember);
+        return new LoginRequestDto(true, new LoginSaveDto(findMember.getUserEmail(), findMember.getApiKey()));
     }
 
     /*

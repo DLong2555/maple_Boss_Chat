@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import project.maple.domain.Member;
 import project.maple.dto.CharacterListDto;
+import project.maple.dto.LoginSaveDto;
 
 import java.util.*;
 
@@ -22,10 +23,10 @@ public class CharacterService {
      * 캐릭터 리스트 조회
      */
     @Cacheable(cacheNames = "getCharacters", key = "'character_list'", cacheManager = "charactersCacheManager")
-    public List<CharacterListDto> getMyCharacters(Member member) throws JsonProcessingException {
+    public List<CharacterListDto> getMyCharacters(LoginSaveDto saveDto) throws JsonProcessingException {
 
         // Json으로 내 캐릭터 리스트 가져오기
-        JsonNode myCharacters = getMyCharactersJSON(member, "/maplestory/v1/character/list", null);
+        JsonNode myCharacters = getMyCharactersJSON(saveDto, "/maplestory/v1/character/list", null);
 
         // 내 캐릭터 리스트 json -> CharacterListDto
 
@@ -61,7 +62,7 @@ public class CharacterService {
         return characterList;
     }
 
-    private static JsonNode getMyCharactersJSON(Member member, String path, Map<String, String> params) {
+    private static JsonNode getMyCharactersJSON(LoginSaveDto saveDto, String path, Map<String, String> params) {
         WebClient webClient = WebClient.builder().baseUrl(baseUrl).build();
 
         return webClient.get()
@@ -70,7 +71,7 @@ public class CharacterService {
                     if (params != null) params.forEach(uriBuilder::queryParam);
                     return uriBuilder.build();
                 })
-                .header("x-nxopen-api-key", member.getApiKey())
+                .header("x-nxopen-api-key", saveDto.getApiKey())
                 .retrieve()
                 .bodyToMono(JsonNode.class)
                 .block();

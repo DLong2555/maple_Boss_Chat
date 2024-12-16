@@ -89,31 +89,33 @@ class MemberServiceTest {
     @Test
     public void login_test() throws Exception {
         //given
-        String id = "maxol2558@gmail.com";
+        String email = "maxol2558@gmail.com";
         String password = "zkzktl25@#";
         String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
 
         //when
-        memberService.signUp(id,password,apiKey);
+        memberService.signUp(email,password,apiKey);
 
         em.flush();
         em.clear();
 
         //then
         LoginForm loginForm = new LoginForm();
-        loginForm.setUserEmail(id);
+        loginForm.setUserEmail(email);
         loginForm.setPassword(password);
 
         //로그인 성공시
         LoginRequestDto result_success = memberService.login(loginForm);
         assertTrue(result_success.isSuccess());
+        assertThat(result_success.getSaveDto().getUserEmail()).isEqualTo(email);
+        assertThat(result_success.getSaveDto().getApiKey()).isEqualTo(apiKey);
 
         //없는 이메일일 시
         loginForm.setUserEmail("");
         assertThrows(IllegalStateException.class, () -> memberService.login(loginForm));
 
         //비밀번호가 틀릴 시
-        loginForm.setUserEmail(id);
+        loginForm.setUserEmail(email);
         loginForm.setPassword("!234");
         assertThrows(IllegalStateException.class, () -> memberService.login(loginForm));
     }
