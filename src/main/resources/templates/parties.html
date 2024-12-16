@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PartyTest</title>
+</head>
+<body>
+<div>
+    <h1>Party List</h1>
+    <div>
+        <div th:each="party : ${parties}">
+            <div>
+                <div>
+                    <!-- 파티명 출력 -->
+                    <h5 th:text="${party.partyName}"></h5>
+                    <!-- 캐릭터 이름 -->
+                    <p><strong>Character Name:</strong> <span th:text="${party.charName}"></span></p>
+                    <!-- 보스 정보 -->
+                    <p><strong>Boss:</strong> <span th:text="${party.boss}"></span></p>
+                    <!-- 난이도 -->
+                    <p><strong>Difficulty:</strong> <span th:text="${party.difficulty}"></span></p>
+                    <!-- 현재 인원 / 최대 인원 -->
+                    <p>
+                        <strong>Members:</strong>
+                        <span th:text="${party.currentMemberCount}"></span> /
+                        <span th:text="${party.maxMemberCount}"></span>
+                    </p>
+                    <!-- 파티 상태 -->
+                    <p><strong>Party Status:</strong> <span th:text="${party.partyState}"></span></p>
+                    <a th:href="@{/party/{partyId}(partyId=${party.id})}" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

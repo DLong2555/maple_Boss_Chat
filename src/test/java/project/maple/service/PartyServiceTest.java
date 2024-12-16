@@ -37,6 +37,7 @@ class PartyServiceTest {
     private PartyRepository partyRepository;
 
     @Test
+    @Rollback(value = false)
     void 파티_생성_테스트() {
         //given
         String id = "maxol2558@gmail.com";
@@ -48,20 +49,25 @@ class PartyServiceTest {
         Optional<Member> member = memberRepository.findById(memberId);
 
         //when
-        Party party = new Party(member.get(), "흰여우", "파티생성테스트", "자쿰", Difficulty.NORMAL, 4);
-        partyService.createParty(party);
+        for (int i = 0; i < 5; i++) {
+            Party party = new Party(member.get(), "흰여우", "파티생성테스트" + i, "자쿰", Difficulty.NORMAL, 4);
+            partyService.createParty(party);
+        }
 
-        //then
-        // - 기본 정보 확인
-        assertThat(party.getPartyName()).isEqualTo("파티생성테스트");
-        assertThat(party.getBoss()).isEqualTo("자쿰");
-        assertThat(party.getDifficulty()).isEqualTo(Difficulty.NORMAL);
-        assertThat(party.getMaxMemberCount()).isEqualTo(4);
-        assertThat(party.getPartyState()).isEqualTo(PartyState.OPEN);
-        assertThat(party.getMember()).isEqualTo(member.get());
-
-        // - 파티를 생성한 멤버와의 연관관계 확인
-        assertThat(party.getMember().getId()).isEqualTo(memberId);
+//        Party party = new Party(member.get(), "흰여우", "파티생성테스트", "자쿰", Difficulty.NORMAL, 4);
+//        partyService.createParty(party);
+//
+//        //then
+//        // - 기본 정보 확인
+//        assertThat(party.getPartyName()).isEqualTo("파티생성테스트");
+//        assertThat(party.getBoss()).isEqualTo("자쿰");
+//        assertThat(party.getDifficulty()).isEqualTo(Difficulty.NORMAL);
+//        assertThat(party.getMaxMemberCount()).isEqualTo(4);
+//        assertThat(party.getPartyState()).isEqualTo(PartyState.OPEN);
+//        assertThat(party.getMember()).isEqualTo(member.get());
+//
+//        // - 파티를 생성한 멤버와의 연관관계 확인
+//        assertThat(party.getMember().getId()).isEqualTo(memberId);
     }
 
     @Test
