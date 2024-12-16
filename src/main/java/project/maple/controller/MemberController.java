@@ -19,28 +19,28 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @GetMapping("/members/login")
+    @GetMapping("/login")
     public String loginForm(Model model) {
         model.addAttribute("loginForm", new LoginForm());
 
-        return "members/loginForm";
+        return "login";
     }
 
-    @PostMapping("/members/login")
+    @PostMapping("/login")
     public String login(HttpSession session, LoginForm loginForm, BindingResult result) {
 
         if(result.hasErrors()) {
-            return "members/loginForm";
+            return "login";
         }
 
         LoginRequestDto loginRequest = memberService.login(loginForm);
         if (loginRequest.isSuccess()){
             session.setAttribute("loginUser", loginRequest.getMember());
 
-            return "redirect:/charters";
+            return "redirect:/characters";
         }
 
-        return "members/loginForm";
+        return "login";
     }
 
 

@@ -3,14 +3,13 @@ package project.maple.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.reactive.function.client.WebClient;
 import project.maple.domain.Member;
 import project.maple.dto.CharacterListDto;
 
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @SpringBootTest
 class CharacterServiceTest {
@@ -29,16 +28,28 @@ class CharacterServiceTest {
         //when
         Member member = new Member(id, password, apiKey);
         List<CharacterListDto> myCharacters = characterService.getMyCharacters(member);
-        myCharacters.forEach(dto -> {
-            System.out.println("ocid = " + dto.getOcid());
-            System.out.println("Character_name = " + dto.getCharacter_name());
-            System.out.println("Character_class = " + dto.getCharacter_class());
-            System.out.println("Character_level = " + dto.getCharacter_level());
-            System.out.println("World_name = " + dto.getWorld_name());
-        });
-
+//        myCharacters.forEach(dto -> {
+//            System.out.println("ocid = " + dto.getOcid());
+//            System.out.println("Character_name = " + dto.getCharacter_name());
+//            System.out.println("Character_class = " + dto.getCharacter_class());
+//            System.out.println("Character_level = " + dto.getCharacter_level());
+//            System.out.println("World_name = " + dto.getWorld_name());
+//        });
 
         //then
+        //첫번째 테스트
+        assertThat(myCharacters.get(0).getCharacter_name()).isEqualTo("프테뇽");
+        assertThat(myCharacters.get(0).getCharacter_class()).isEqualTo("다크나이트");
+        assertThat(myCharacters.get(0).getCharacter_level()).isEqualTo(285);
+        assertThat(myCharacters.get(0).getWorld_name()).isEqualTo("크로아");
+        assertThat(myCharacters.get(0).getOcid()).isEqualTo("afe73d5cae7a7195657deca902b2f965");
+
+        //마지막 테스트
+        assertThat(myCharacters.get(myCharacters.size() - 1).getCharacter_name()).isEqualTo("양갈래몰랑");
+        assertThat(myCharacters.get(myCharacters.size() - 1).getCharacter_class()).isEqualTo("제논");
+        assertThat(myCharacters.get(myCharacters.size() - 1).getCharacter_level()).isEqualTo(1);
+        assertThat(myCharacters.get(myCharacters.size() - 1).getWorld_name()).isEqualTo("제니스");
+        assertThat(myCharacters.get(myCharacters.size() - 1).getOcid()).isEqualTo("b8676d0124d69aaa46bb291951d34245");
 
     }
 }

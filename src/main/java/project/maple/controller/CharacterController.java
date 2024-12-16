@@ -18,15 +18,20 @@ public class CharacterController {
 
     private final CharacterService characterService;
 
-    @GetMapping("/charaters")
+    @GetMapping("/characters")
     public String characterListForm(HttpSession session, Model model) throws JsonProcessingException {
-        Member user = (Member) session.getAttribute("user");
+//        Member member = (Member) session.getAttribute("user");
+        String id = "maxol2558@gmail.com";
+        String password = "zkzktl25@#";
+        String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
+        Member member = new Member(id, password, apiKey);
 
-        characterService.getMyCharacters(user);
-
-        List<CharacterListDto> charList = List.of();
+        List<CharacterListDto> charList = characterService.getMyCharacters(member);
+        if(!charList.isEmpty()) charList.forEach(dto -> {
+            System.out.println("dto.getCharacter_name() = " + dto.getCharacter_name());
+        });
         model.addAttribute("charList", charList);
 
-        return "character/charaters";
+        return "characters";
     }
 }
