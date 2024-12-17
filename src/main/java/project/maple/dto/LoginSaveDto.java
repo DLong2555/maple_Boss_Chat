@@ -3,6 +3,7 @@ package project.maple.dto;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
+import project.maple.dto.character.ChooseCharInfo;
 
 @Getter @Setter
 public class LoginSaveDto {

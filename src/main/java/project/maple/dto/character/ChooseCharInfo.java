@@ -1,4 +1,4 @@
-package project.maple.dto;
+package project.maple.dto.character;
 
 import lombok.Getter;
 import lombok.Setter;
