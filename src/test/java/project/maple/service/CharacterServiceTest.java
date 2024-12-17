@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import project.maple.dto.character.CharacterListDto;
 import project.maple.dto.LoginSaveDto;
 import project.maple.dto.character.CharacterStatDto;
+import project.maple.dto.character.item.ItemBaseOption;
 
 import java.util.List;
 
