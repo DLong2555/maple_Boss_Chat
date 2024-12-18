@@ -20,6 +20,7 @@ public class Party {
     @NotNull(message = "파티장 : 필수 정보입니다.")
     private Member member;
     private String charName;
+    private String charOcid;
 
     @NotNull(message = "파티명 : 필수 정보입니다.")
     @Column(nullable = false)
@@ -45,9 +46,10 @@ public class Party {
 
     protected Party() {}
 
-    public Party(Member member, String charName, String partyName, String boss, Difficulty difficulty, int maxMemberCount) {
+    public Party(Member member, String charName, String charOcid, String partyName, String boss, Difficulty difficulty, int maxMemberCount) {
         this.member = member;
         this.charName = charName;
+        this.charOcid = charOcid;
         this.partyName = partyName;
         this.boss = boss;
         this.difficulty = difficulty;
@@ -55,4 +57,5 @@ public class Party {
         this.partyState = PartyState.OPEN;
         this.currentMemberCount++;
     }
+
 }

@@ -43,6 +43,7 @@ class PartyServiceTest {
         String id = "maxol2558@gmail.com";
         String password = "zkzktl25@#";
         String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
+        String ocid = "test";
 
         Long memberId = memberService.signUp(id, password, apiKey);
 
@@ -50,7 +51,7 @@ class PartyServiceTest {
 
         //when
         for (int i = 0; i < 5; i++) {
-            Party party = new Party(member.get(), "흰여우", "파티생성테스트" + i, "자쿰", Difficulty.NORMAL, 4);
+            Party party = new Party(member.get(), "흰여우", ocid, "파티생성테스트" + i, "자쿰", Difficulty.NORMAL, 4);
             partyService.createParty(party);
         }
 
@@ -76,12 +77,13 @@ class PartyServiceTest {
         String id = "maxol2558@gmail.com";
         String password = "zkzktl25@#";
         String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
+        String ocid = "test";
 
         Long memberId = memberService.signUp(id, password, apiKey);
 
         Optional<Member> member = memberRepository.findById(memberId);
 
-        Party party = partyService.createParty(new Party(member.get(), "흰여우", "파티생성테스트", "자쿰", Difficulty.NORMAL, 4));
+        Party party = partyService.createParty(new Party(member.get(), "흰여우", ocid, "파티생성테스트", "자쿰", Difficulty.NORMAL, 4));
 
         //when
         Party findParty = partyService.findById(party.getId());
@@ -104,15 +106,16 @@ class PartyServiceTest {
         String id = "maxol2558@gmail.com";
         String password = "zkzktl25@#";
         String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
+        String ocid = "test";
 
         Long memberId = memberService.signUp(id, password, apiKey);
 
         Optional<Member> member = memberRepository.findById(memberId);
 
-        Party party = partyService.createParty(new Party(member.get(), "흰여우", "파티생성테스트", "자쿰", Difficulty.NORMAL, 4));
+        Party party = partyService.createParty(new Party(member.get(), "흰여우", ocid, "파티생성테스트", "자쿰", Difficulty.NORMAL, 4));
 
         //when
-        partyService.deleteParty(party.getId());
+        partyService.deleteParty(party.getId(), "maxol2558@gmail.com");
 
         //then
         assertThat(partyRepository.findById(party.getId())).isEmpty(); // 파티가 삭제되었는지 확인

@@ -19,6 +19,7 @@ public class PartyMember {
     @JoinColumn(name = "member_id")
     private Member member;
     private String charName;
+    private String charOcid;
 
     /**
      * 속한 파티
@@ -34,9 +35,10 @@ public class PartyMember {
 
     protected PartyMember() {}
 
-    public PartyMember(Member member, String charName, Party party, ApprovalStatus status) {
+    public PartyMember(Member member, String charName, String charOcid, Party party, ApprovalStatus status) {
         this.member = member;
         this.charName = charName;
+        this.charOcid = charOcid;
         this.party = party;
         this.status = status;
     }

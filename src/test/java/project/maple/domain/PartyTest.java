@@ -25,16 +25,17 @@ class PartyTest {
         Member member = new Member("testId@test.test", "testPass", "test_api_key");
 
         String charName = "test";
+        String charOcid = "test";
         String partyName = "test"; //파티명 또는 파티 설명
         String boss = "test";
         Difficulty difficulty = Difficulty.HARD; // 난이도
         int maxMemberCount = 4; // 최대 모집 인원수
 
-        Party party_null_member = new Party(null, charName, partyName, boss, difficulty, maxMemberCount);
-        Party party_null_charName = new Party(member, null, partyName, boss, difficulty, maxMemberCount);
-        Party party_null_partyName = new Party(member, charName, null, boss, difficulty, maxMemberCount);
-        Party party_null_boss = new Party(member, charName, partyName, null, difficulty, maxMemberCount);
-        Party party_null_difficulty = new Party(member, charName, partyName, boss, null, maxMemberCount);
+        Party party_null_member = new Party(null, charName, charOcid, partyName, boss, difficulty, maxMemberCount);
+        Party party_null_charName = new Party(member, null, charOcid, partyName, boss, difficulty, maxMemberCount);
+        Party party_null_partyName = new Party(member, charName, charOcid, null, boss, difficulty, maxMemberCount);
+        Party party_null_boss = new Party(member, charName, charOcid, partyName, null, difficulty, maxMemberCount);
+        Party party_null_difficulty = new Party(member, charName, charOcid, partyName, boss, null, maxMemberCount);
 
         //when
 
