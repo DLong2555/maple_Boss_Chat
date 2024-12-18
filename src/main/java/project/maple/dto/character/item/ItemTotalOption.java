@@ -33,3 +33,4 @@ public class ItemTotalOption{
     private String max_mp_rate;
 
 }
+

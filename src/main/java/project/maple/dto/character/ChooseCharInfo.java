@@ -8,6 +8,4 @@ public class ChooseCharInfo {
 
     private String charName;
     private String ocid;
-
-
 }

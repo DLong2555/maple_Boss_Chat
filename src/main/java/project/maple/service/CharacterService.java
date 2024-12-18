@@ -11,7 +11,10 @@ import org.springframework.web.reactive.function.client.WebClient;
 import project.maple.dto.character.CharacterListDto;
 import project.maple.dto.LoginSaveDto;
 import project.maple.dto.character.CharacterStatDto;
+import project.maple.dto.character.item.ItemEquipmentDto;
 
+import java.io.DataInput;
+import java.io.IOException;
 import java.util.*;
 
 @Service
@@ -83,9 +86,27 @@ public class CharacterService {
         //json -> dto 변환
         return mapper.convertValue(
                 myCharactersJSON.findValue("final_stat"),
-                new TypeReference<ArrayList<CharacterStatDto>>() {
+                new TypeReference<ArrayList<CharacterStatDto>>() {}
+        );
+    }
+
+    /**
+     * 캐릭터 장비 조회
+     */
+    public List<ItemEquipmentDto> getCharacterEquipment(String ocid) throws IOException {
+        mapper = new ObjectMapper();
+
+        Map<String, String> params = new HashMap<>();
+        params.put("ocid", ocid);
+
+        JsonNode myCharactersJSON = getMyCharactersJSON(admin_api_key, "/maplestory/v1/character/item-equipment", params);
+
+        return mapper.convertValue(
+                myCharactersJSON.findValue("item_equipment_preset_1"),
+                new TypeReference<ArrayList<ItemEquipmentDto>>() {
                 }
         );
     }
+
 
 }

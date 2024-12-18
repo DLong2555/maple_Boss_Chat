@@ -7,6 +7,7 @@ import project.maple.dto.character.CharacterListDto;
 import project.maple.dto.LoginSaveDto;
 import project.maple.dto.character.CharacterStatDto;
 import project.maple.dto.character.item.ItemBaseOption;
+import project.maple.dto.character.item.ItemEquipmentDto;
 
 import java.util.List;
 
@@ -67,5 +68,31 @@ class CharacterServiceTest {
         }
         //then
 
+    }
+
+    @Test
+    public void get_character_item_equipment_test() throws Exception {
+        //given
+        String ocid = "afe73d5cae7a7195657deca902b2f965";
+
+        //when
+        List<ItemEquipmentDto> characterEquipment = characterService.getCharacterEquipment(ocid);
+
+        for (ItemEquipmentDto itemEquipmentDto : characterEquipment) {
+            System.out.println("itemEquipmentDto.getItem_equipment_part() = " + itemEquipmentDto.getItem_equipment_part());
+            System.out.println("itemEquipmentDto.getItemTotalOption().getStr() = " + itemEquipmentDto.getItemTotalOption().getStr());
+            System.out.println("itemEquipmentDto.getItemBaseOption().getStr() = " + itemEquipmentDto.getItemBaseOption().getStr());
+            System.out.println("itemEquipmentDto.getItemAddOption().getStr() = " + itemEquipmentDto.getItemAddOption().getStr());
+            System.out.println("itemEquipmentDto.getItemEtcOption().getStr() = " + itemEquipmentDto.getItemEtcOption().getStr());
+            System.out.println("itemEquipmentDto.getItemStarforceOption().getStr() = " + itemEquipmentDto.getItemStarforceOption().getStr());
+            System.out.println("itemEquipmentDto.getItemStarforceOption().getStr() = " + itemEquipmentDto.getItemStarforceOption().getStr());
+            System.out.println("itemEquipmentDto.getPotential_option_grade() = " + itemEquipmentDto.getPotential_option_grade());
+            System.out.println("itemEquipmentDto.getPotential_option_1() = " + itemEquipmentDto.getPotential_option_1());
+            System.out.println("itemEquipmentDto.getAdditional_potential_option_grade() = " + itemEquipmentDto.getAdditional_potential_option_grade());
+            System.out.println("itemEquipmentDto.getAdditional_potential_option_1() = " + itemEquipmentDto.getAdditional_potential_option_1());
+            System.out.println("========================================================================================");
+        }
+
+        //then
     }
 }
