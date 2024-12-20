@@ -86,26 +86,35 @@ public class CharacterService {
         //json -> dto 변환
         return mapper.convertValue(
                 myCharactersJSON.findValue("final_stat"),
-                new TypeReference<ArrayList<CharacterStatDto>>() {}
+                new TypeReference<ArrayList<CharacterStatDto>>() {
+                }
         );
     }
 
     /**
      * 캐릭터 장비 조회
      */
-    public List<ItemEquipmentDto> getCharacterEquipment(String ocid) throws IOException {
+    public Map<String, List<ItemEquipmentDto>> getCharacterEquipment(String ocid) throws IOException {
         mapper = new ObjectMapper();
 
         Map<String, String> params = new HashMap<>();
         params.put("ocid", ocid);
 
         JsonNode myCharactersJSON = getMyCharactersJSON(admin_api_key, "/maplestory/v1/character/item-equipment", params);
+        Map<String, List<ItemEquipmentDto>> itemEquipmentMap = new HashMap<>();
 
-        return mapper.convertValue(
-                myCharactersJSON.findValue("item_equipment_preset_1"),
-                new TypeReference<ArrayList<ItemEquipmentDto>>() {
-                }
-        );
+        for(int i = 1; i <= 3; i++) {
+            String preset = "item_equipment_preset_" + i;
+            ArrayList<ItemEquipmentDto> itemEquipmentPreset = mapper.convertValue(
+                    myCharactersJSON.findValue(preset),
+                    new TypeReference<ArrayList<ItemEquipmentDto>>() {
+                    }
+            );
+            itemEquipmentMap.put(preset, itemEquipmentPreset);
+        }
+
+
+        return itemEquipmentMap;
     }
 
 
