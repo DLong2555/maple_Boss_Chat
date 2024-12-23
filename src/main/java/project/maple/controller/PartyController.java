@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import project.maple.domain.Party;
 import project.maple.dto.LoginSaveDto;
+import project.maple.dto.PartyInfoDto;
 import project.maple.service.PartyService;
 
 import java.util.List;
@@ -23,14 +24,14 @@ public class PartyController {
      */
     @GetMapping(value = "/parties")
     public String getParties(Model model) {
-        List<Party> parties = partyService.findParties();
+        List<PartyInfoDto> parties = partyService.findParties();
         model.addAttribute("parties", parties);
         return "parties";
     }
 
     @GetMapping(value = "/party/{partyId}")
     public String getParty(Model model, @PathVariable Long partyId) {
-        Party party = partyService.findById(partyId);
+        PartyInfoDto party = partyService.findById(partyId);
         model.addAttribute("party", party);
         return "parties";
     }

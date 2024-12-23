@@ -3,11 +3,15 @@ package project.maple.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.maple.domain.ApprovalStatus;
 import project.maple.domain.Party;
+import project.maple.domain.PartyMember;
+import project.maple.dto.PartyInfoDto;
 import project.maple.repository.PartyMemberRepository;
 import project.maple.repository.PartyRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
@@ -28,15 +32,21 @@ public class PartyService {
     /*
     특정 파티 조회
      */
-    public Party findById(Long partyId) {
-        return partyRepository.findById(partyId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 파티입니다."));
+    public PartyInfoDto findById(Long partyId) {
+        Party party = partyRepository.findById(partyId)
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 파티입니다."));
+        return convertToDto(party);
+        //return partyRepository.findById(partyId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 파티입니다."));
     }
 
     /*
     모든 파티 조회
      */
-    public List<Party> findParties() {
-        return partyRepository.findAll();
+    public List<PartyInfoDto> findParties() {
+        List<Party> parties = partyRepository.findAll();
+        return parties.stream()
+                .map(this :: convertToDto)
+                .collect(Collectors.toList());
     }
 
     /*
@@ -67,5 +77,28 @@ public class PartyService {
 
         // 2. 파티 삭제
         deleteParty(partyId, userEmail);
+    }
+
+    public PartyInfoDto convertToDto(Party party) {
+        List<String> members = partyMemberRepository.findByPartyAndStatus(party, ApprovalStatus.APPROVED)
+                .stream()
+                .map(PartyMember::getCharName)
+                .collect(Collectors.toList());
+
+        List<String> applicants = partyMemberRepository.findByPartyAndStatus(party, ApprovalStatus.PENDING)
+                .stream()
+                .map(PartyMember::getCharName)
+                .collect(Collectors.toList());
+
+        return new PartyInfoDto(
+                party.getId(),
+                party.getPartyName(),
+                party.getBoss(),
+                party.getDifficulty(),
+                applicants,
+                party.getMaxMemberCount(),
+                members,
+                party.getPartyState()
+        );
     }
 }

@@ -86,7 +86,7 @@ class PartyServiceTest {
         Party party = partyService.createParty(new Party(member.get(), "흰여우", ocid, "파티생성테스트", "자쿰", Difficulty.NORMAL, 4));
 
         //when
-        Party findParty = partyService.findById(party.getId());
+        Party findParty = partyRepository.findById(party.getId()).get();
 
         //then
         assertThat(findParty).isEqualTo(party);
