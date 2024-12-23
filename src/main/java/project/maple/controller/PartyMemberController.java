@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import project.maple.dto.LoginSaveDto;
+import project.maple.dto.member.LoginSaveDto;
 import project.maple.service.PartyMemberService;
 
 @Controller
@@ -19,7 +19,7 @@ public class PartyMemberController {
     @PostMapping(value = "/party/{partyId}/join")
     public String applyToParty(@PathVariable Long partyId, HttpSession session) {
         LoginSaveDto user = (LoginSaveDto) session.getAttribute("user");
-        String userEmail = user.getUserEmail();
+        String userEmail = user.getEmail();
         String nowCharOcid = user.getNowCharOcid();
         String nowCharName = user.getNowCharName();
 
@@ -32,7 +32,7 @@ public class PartyMemberController {
     @PostMapping(value = "/party/{partyId}/approve")
     public String approveToParty(@PathVariable Long partyId, HttpSession session) {
         LoginSaveDto user = (LoginSaveDto) session.getAttribute("user");
-        partyMemberService.approveMember(partyId, user.getUserEmail());
+        partyMemberService.approveMember(partyId, user.getEmail());
         return "redirect:/parties";
     }
 
@@ -42,7 +42,7 @@ public class PartyMemberController {
     @PostMapping(value = "/party/{partyId}/reject")
     public String rejectToParty(@PathVariable Long partyId, HttpSession session) {
         LoginSaveDto user = (LoginSaveDto) session.getAttribute("user");
-        partyMemberService.rejectMember(partyId, user.getUserEmail());
+        partyMemberService.rejectMember(partyId, user.getEmail());
         return "redirect:/parties";
     }
 
@@ -52,7 +52,7 @@ public class PartyMemberController {
     @PostMapping(value = "/party/{partyId}/leave")
     public String leaveParty(@PathVariable Long partyId, HttpSession session) {
         LoginSaveDto user = (LoginSaveDto) session.getAttribute("user");
-        partyMemberService.leaveParty(partyId, user.getUserEmail());
+        partyMemberService.leaveParty(partyId, user.getEmail());
         return "redirect:/parties";
     }
 }

@@ -5,12 +5,12 @@ import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import project.maple.domain.Member;
-import project.maple.dto.LoginForm;
-import project.maple.dto.LoginRequestDto;
+import project.maple.dto.member.JoinForm;
+import project.maple.dto.member.LoginForm;
+import project.maple.dto.member.LoginRequestDto;
 import project.maple.exception.DuplicateMemberException;
 import project.maple.repository.MemberRepository;
 
@@ -46,28 +46,30 @@ class MemberServiceTest {
         String email2 = "maxol2558@gmail.com";
         String api2 = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
 
+        JoinForm joinForm1 = new JoinForm(email1, password, api1);
+
         //when
-        memberService.signUp(email1, password, api1);
+        memberService.join(joinForm1);
 
         //then
         // 이메일 중복 시 에러 발생 테스트
-        assertThrows(DuplicateMemberException.class, () -> memberService.signUp(email1, password, api2));
+        assertThrows(DuplicateMemberException.class, () -> memberService.join(new JoinForm(email1, password, api2)));
 
         // api 중복 시 에러 발생 테스트
-        assertThrows(DuplicateMemberException.class, () -> memberService.signUp(email2, password, api1));
+        assertThrows(DuplicateMemberException.class, () -> memberService.join(new JoinForm(email2, password, api1)));
     }
 
     @Test
-    public void signUp_and_duplicate_test() throws Exception {
+    public void join_and_duplicate_test() throws Exception {
         //given
-        String id = "maxol2558@gmail.com";
+        String email = "maxol2558@gmail.com";
         String password = "zkzktl25@#";
         String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
 
-        Member member = new Member(id, password, apiKey);
+        Member member = new Member(email, password, apiKey);
 
         //when
-        Long memberId = memberService.signUp(id,password,apiKey);
+        Long memberId = memberService.join(new JoinForm(email,password,apiKey));
 
         //then
         Optional<Member> findEntity = memberRepository.findById(memberId);
@@ -77,7 +79,7 @@ class MemberServiceTest {
         assertThat(findMember.getId()).isEqualTo(memberId);
 
         // 아이디 확인
-        assertThat(findMember.getUserEmail()).isEqualTo(id);
+        assertThat(findMember.getUserEmail()).isEqualTo(email);
 
         // 비밀번호 확인
         assertTrue(passwordEncoder.matches(member.getUserPass(), findMember.getUserPass()));
@@ -94,7 +96,7 @@ class MemberServiceTest {
         String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
 
         //when
-        memberService.signUp(email,password,apiKey);
+        memberService.join(new JoinForm(email,password,apiKey));
 
         em.flush();
         em.clear();
@@ -107,7 +109,7 @@ class MemberServiceTest {
         //로그인 성공시
         LoginRequestDto result_success = memberService.login(loginForm);
         assertTrue(result_success.isSuccess());
-        assertThat(result_success.getSaveDto().getUserEmail()).isEqualTo(email);
+        assertThat(result_success.getSaveDto().getEmail()).isEqualTo(email);
         assertThat(result_success.getSaveDto().getApiKey()).isEqualTo(apiKey);
 
         //없는 이메일일 시

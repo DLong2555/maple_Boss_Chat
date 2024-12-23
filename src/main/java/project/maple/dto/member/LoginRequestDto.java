@@ -1,8 +1,7 @@
-package project.maple.dto;
+package project.maple.dto.member;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import project.maple.domain.Member;
 
 @RequiredArgsConstructor
 @Getter

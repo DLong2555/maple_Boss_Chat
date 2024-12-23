@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import project.maple.domain.Party;
-import project.maple.dto.LoginSaveDto;
+import project.maple.dto.member.LoginSaveDto;
 import project.maple.dto.PartyInfoDto;
 import project.maple.service.PartyService;
 
@@ -51,7 +51,7 @@ public class PartyController {
     @PostMapping(value = "/party/{partyId}/delete")
     public String deleteParty(@PathVariable Long partyId, HttpSession session) {
         LoginSaveDto user = (LoginSaveDto) session.getAttribute("user");
-        String userEmail = user.getUserEmail();
+        String userEmail = user.getEmail();
         partyService.deleteParty(partyId, userEmail);
         return "redirect:/parties";
     }

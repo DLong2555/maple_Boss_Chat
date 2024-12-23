@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import project.maple.dto.character.CharacterListDto;
 import project.maple.dto.character.ChooseCharInfo;
-import project.maple.dto.LoginSaveDto;
+import project.maple.dto.member.LoginSaveDto;
 import project.maple.service.CharacterService;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package project.maple.dto;
+package project.maple.dto.member;
 
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -9,13 +9,13 @@ import project.maple.dto.character.ChooseCharInfo;
 public class LoginSaveDto {
 
     @Email
-    private String userEmail;
+    private String email;
     private String apiKey;
     private String nowCharName;
     private String nowCharOcid;
 
     public LoginSaveDto(String userEmail, String apiKey) {
-        this.userEmail = userEmail;
+        this.email = userEmail;
         this.apiKey = apiKey;
     }
 

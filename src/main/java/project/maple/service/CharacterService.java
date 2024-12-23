@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import project.maple.dto.character.CharacterListDto;
-import project.maple.dto.LoginSaveDto;
+import project.maple.dto.member.LoginSaveDto;
 import project.maple.dto.character.CharacterStatDto;
 import project.maple.dto.character.item.ItemEquipmentDto;
 
-import java.io.DataInput;
 import java.io.IOException;
 import java.util.*;
 

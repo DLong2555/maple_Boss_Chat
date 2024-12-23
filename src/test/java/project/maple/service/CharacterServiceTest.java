@@ -4,9 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import project.maple.dto.character.CharacterListDto;
-import project.maple.dto.LoginSaveDto;
+import project.maple.dto.member.LoginSaveDto;
 import project.maple.dto.character.CharacterStatDto;
-import project.maple.dto.character.item.ItemBaseOption;
 import project.maple.dto.character.item.ItemEquipmentDto;
 
 import java.util.List;

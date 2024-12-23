@@ -1,24 +1,21 @@
 package project.maple.service;
 
-import jakarta.persistence.EntityManager;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import project.maple.domain.Difficulty;
 import project.maple.domain.Member;
 import project.maple.domain.Party;
 import project.maple.domain.PartyState;
+import project.maple.dto.member.JoinForm;
 import project.maple.repository.MemberRepository;
 import project.maple.repository.PartyRepository;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
@@ -40,12 +37,12 @@ class PartyServiceTest {
     @Rollback(value = false)
     void 파티_생성_테스트() {
         //given
-        String id = "maxol2558@gmail.com";
+        String email = "maxol2558@gmail.com";
         String password = "zkzktl25@#";
         String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
         String ocid = "test";
 
-        Long memberId = memberService.signUp(id, password, apiKey);
+        Long memberId = memberService.join(new JoinForm(email,password,apiKey));
 
         Optional<Member> member = memberRepository.findById(memberId);
 
@@ -74,12 +71,12 @@ class PartyServiceTest {
     @Test
     void 파티_조회_테스트() {
         //given
-        String id = "maxol2558@gmail.com";
+        String email = "maxol2558@gmail.com";
         String password = "zkzktl25@#";
         String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
         String ocid = "test";
 
-        Long memberId = memberService.signUp(id, password, apiKey);
+        Long memberId = memberService.join(new JoinForm(email,password,apiKey));
 
         Optional<Member> member = memberRepository.findById(memberId);
 
@@ -103,12 +100,12 @@ class PartyServiceTest {
     @Test
     void 파티_삭제_테스트() {
         //given
-        String id = "maxol2558@gmail.com";
+        String email = "maxol2558@gmail.com";
         String password = "zkzktl25@#";
         String apiKey = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
         String ocid = "test";
 
-        Long memberId = memberService.signUp(id, password, apiKey);
+        Long memberId = memberService.join(new JoinForm(email,password,apiKey));
 
         Optional<Member> member = memberRepository.findById(memberId);
 
