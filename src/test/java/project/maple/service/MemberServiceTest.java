@@ -103,7 +103,7 @@ class MemberServiceTest {
 
         //then
         LoginForm loginForm = new LoginForm();
-        loginForm.setUserEmail(email);
+        loginForm.setEmail(email);
         loginForm.setPassword(password);
 
         //로그인 성공시
@@ -113,11 +113,11 @@ class MemberServiceTest {
         assertThat(result_success.getSaveDto().getApiKey()).isEqualTo(apiKey);
 
         //없는 이메일일 시
-        loginForm.setUserEmail("");
+        loginForm.setEmail("");
         assertThrows(IllegalStateException.class, () -> memberService.login(loginForm));
 
         //비밀번호가 틀릴 시
-        loginForm.setUserEmail(email);
+        loginForm.setEmail(email);
         loginForm.setPassword("!234");
         assertThrows(IllegalStateException.class, () -> memberService.login(loginForm));
     }

@@ -10,7 +10,7 @@ public class LoginForm {
 
     @Email(message = "이메일 형식이 아닙니다.")
     @NotBlank(message = "이메일은 입력하세요.")
-    private String email;
+    private String username;
 
     @NotBlank(message = "비밀번호를 입력하세요.")
     private String password;
@@ -18,8 +18,8 @@ public class LoginForm {
     public LoginForm() {
     }
 
-    public LoginForm(String email, String password) {
-        this.email = email;
+    public LoginForm(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 }

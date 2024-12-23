@@ -61,31 +61,31 @@ public class MemberController {
         return "member/loginForm";
     }
 
-    @PostMapping("/login")
-    public String login(@Valid LoginForm loginForm, BindingResult result, HttpSession session) {
-
-        log.info("loginForm email: {}", loginForm.getEmail());
-
-        if(result.hasErrors()) {
-            return "member/loginForm";
-        }
-
-        LoginRequestDto loginRequest = memberService.login(loginForm);
-        log.info("login request: {}", loginRequest);
-
-        if (loginRequest.isSuccess()){
-
-            UsernamePasswordAuthenticationToken authenticationToken
-                    = new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword());
-            authenticationManager.authenticate(authenticationToken);
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
-            session.setAttribute("loginUser", loginRequest.getSaveDto());
-
-            return "redirect:/characters";
-        }
-
-        return "/";
-    }
+//    @PostMapping("/login")
+//    public String login(@Valid LoginForm loginForm, BindingResult result, HttpSession session) {
+//
+//        log.info("loginForm email: {}", loginForm.getEmail());
+//
+//        if(result.hasErrors()) {
+//            return "member/loginForm";
+//        }
+//
+//        LoginRequestDto loginRequest = memberService.login(loginForm);
+//        log.info("login request: {}", loginRequest);
+//
+//        if (loginRequest.isSuccess()){
+//
+//            UsernamePasswordAuthenticationToken authenticationToken
+//                    = new UsernamePasswordAuthenticationToken(loginForm.getEmail(), loginForm.getPassword());
+//            authenticationManager.authenticate(authenticationToken);
+//            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+//
+//            session.setAttribute("loginUser", loginRequest.getSaveDto());
+//
+//            return "redirect:/characters";
+//        }
+//
+//        return "/";
+//    }
 
 }

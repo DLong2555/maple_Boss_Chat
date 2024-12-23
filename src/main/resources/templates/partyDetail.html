@@ -1,0 +1,27 @@
+<!-- partyDetail.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>파티 상세 정보</title>
+</head>
+<body>
+    <h1>파티 상세 정보</h1>
+    <p><strong>파티상태:</strong> <span th:text="${party.getPartyState()}"></span></p>
+    <p><strong>파티이름:</strong> <span th:text="${party.getPartyName()}"></span></p>
+    <p><strong>보스이름:</strong> <span th:text="${party.getBoss()}"></span></p>
+    <p><strong>난이도:</strong> <span th:text="${party.getDifficulty()}"></span></p>
+    <p><strong>모집인원:</strong> <span th:text="${party.getMaxMemberCount()}"></span></p>
+
+    <h2>파티 신청자</h2>
+    <ul>
+        <li th:each="applicant : ${party.getApplicants()}" th:text="${applicant}"></li>
+    </ul>
+
+    <h2>파티원</h2>
+    <ul>
+        <li th:each="member : ${party.getMembers()}" th:text="${member}"></li>
+    </ul>
+
+    <a th:href="@{/parties}">목록으로 돌아가기</a>
+</body>
+</html>

@@ -33,7 +33,7 @@ public class PartyController {
     public String getParty(Model model, @PathVariable Long partyId) {
         PartyInfoDto party = partyService.findById(partyId);
         model.addAttribute("party", party);
-        return "parties";
+        return "partyDetail";
     }
 
     /*

@@ -66,7 +66,7 @@ public class MemberService implements UserDetailsService {
      * 로그인
      */
     public LoginRequestDto login(LoginForm loginForm) {
-        Member findMember = memberRepository.findByEmail(loginForm.getEmail()).orElseThrow(() -> new IllegalStateException("이메일 또는 비밀번호가 잘못되었습니다."));
+        Member findMember = memberRepository.findByEmail(loginForm.getUsername()).orElseThrow(() -> new IllegalStateException("이메일 또는 비밀번호가 잘못되었습니다."));
 
         if (!passwordEncoder.matches(loginForm.getPassword(), findMember.getUserPass())) {
             throw new IllegalStateException("이메일 또는 비밀번호가 잘못되었습니다.");
