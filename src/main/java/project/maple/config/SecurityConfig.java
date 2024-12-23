@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/characters") // 로그인 성공시 이동할 url 링크
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll);
