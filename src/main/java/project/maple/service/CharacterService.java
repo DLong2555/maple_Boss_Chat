@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +17,7 @@ import project.maple.dto.character.item.ItemEquipmentDto;
 import java.io.IOException;
 import java.util.*;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 public class CharacterService {
@@ -29,10 +31,10 @@ public class CharacterService {
      * 캐릭터 리스트 조회
      */
     @Cacheable(cacheNames = "getCharacters", key = "'character_list'", cacheManager = "charactersCacheManager")
-    public List<CharacterListDto> getMyCharacters(LoginSaveDto saveDto) throws JsonProcessingException {
+    public List<CharacterListDto> getMyCharacters(String apiKey) throws JsonProcessingException {
 
         // Json으로 내 캐릭터 리스트 가져오기
-        JsonNode myCharacters = getMyCharactersJSON(saveDto.getApiKey(), "/maplestory/v1/character/list", null);
+        JsonNode myCharacters = getMyCharactersJSON(apiKey, "/maplestory/v1/character/list", null);
 
         // 내 캐릭터 리스트 json -> CharacterListDto
         return getCharacterListDtos(myCharacters);

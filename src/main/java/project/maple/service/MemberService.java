@@ -6,14 +6,11 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.maple.domain.Member;
 import project.maple.dto.member.JoinForm;
-import project.maple.dto.member.LoginForm;
-import project.maple.dto.member.LoginRequestDto;
-import project.maple.dto.member.LoginSaveDto;
 import project.maple.exception.DuplicateMemberException;
 import project.maple.repository.MemberRepository;
 
@@ -25,11 +22,10 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class MemberService implements UserDetailsService {
+public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final PasswordEncoder passwordEncoder;
-
+    private final BCryptPasswordEncoder passwordEncoder;
 
     /**
      * 회원가입
@@ -65,26 +61,17 @@ public class MemberService implements UserDetailsService {
     /**
      * 로그인
      */
-    public LoginRequestDto login(LoginForm loginForm) {
-        Member findMember = memberRepository.findByEmail(loginForm.getUsername()).orElseThrow(() -> new IllegalStateException("이메일 또는 비밀번호가 잘못되었습니다."));
+//    public LoginRequestDto login(LoginForm loginForm) {
+//        Member findMember = memberRepository.findByEmail(loginForm.getUsername()).orElseThrow(() -> new IllegalStateException("이메일 또는 비밀번호가 잘못되었습니다."));
+//
+//        if (!passwordEncoder.matches(loginForm.getPassword(), findMember.getUserPass())) {
+//            throw new IllegalStateException("이메일 또는 비밀번호가 잘못되었습니다.");
+//        }
+//
+//        return new LoginRequestDto(true, new LoginSaveDto(findMember.getUsername(), findMember.getApiKey()));
+//    }
 
-        if (!passwordEncoder.matches(loginForm.getPassword(), findMember.getUserPass())) {
-            throw new IllegalStateException("이메일 또는 비밀번호가 잘못되었습니다.");
-        }
 
-        return new LoginRequestDto(true, new LoginSaveDto(findMember.getUserEmail(), findMember.getApiKey()));
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<Member> memberOpt = memberRepository.findByEmail(email);
-        if(memberOpt.isEmpty()){
-            throw new UsernameNotFoundException("사용자를 찾을 수 없습니다.");
-        }
-
-        Member member = memberOpt.get();
-        return new User(member.getUserEmail(),member.getUserPass(),new ArrayList<>());
-    }
     /*
     이메일로 멤버 id 조회
      */

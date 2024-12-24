@@ -79,7 +79,7 @@ class MemberServiceTest {
         assertThat(findMember.getId()).isEqualTo(memberId);
 
         // 아이디 확인
-        assertThat(findMember.getUserEmail()).isEqualTo(email);
+        assertThat(findMember.getUsername()).isEqualTo(email);
 
         // 비밀번호 확인
         assertTrue(passwordEncoder.matches(member.getUserPass(), findMember.getUserPass()));

@@ -1,22 +1,18 @@
 package project.maple.controller;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.security.core.Authentication;
+import project.maple.dto.CustomUserDetails;
 import project.maple.dto.member.JoinForm;
 import project.maple.dto.member.LoginForm;
-import project.maple.dto.member.LoginRequestDto;
-import project.maple.service.LoginService;
+import project.maple.repository.MemberRepository;
 import project.maple.service.MemberService;
 
 @Slf4j
@@ -25,10 +21,12 @@ import project.maple.service.MemberService;
 public class MemberController {
 
     private final MemberService memberService;
-    private final AuthenticationManager authenticationManager;
+    private final MemberRepository memberRepository;
 
     @GetMapping("/")
     public String index() {
+
+
         return "index";
     }
 
@@ -60,6 +58,7 @@ public class MemberController {
 
         return "member/loginForm";
     }
+
 
 //    @PostMapping("/login")
 //    public String login(@Valid LoginForm loginForm, BindingResult result, HttpSession session) {

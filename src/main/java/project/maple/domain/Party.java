@@ -32,6 +32,7 @@ public class Party {
 
     @NotNull(message = "난이도 : 필수 정보입니다.")
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Difficulty difficulty; // 난이도
 
     private int currentMemberCount = 0; // 현재 모집된 인원수
@@ -42,6 +43,7 @@ public class Party {
 
     @NotNull(message = "파티상태 : 필수 정보입니다.")
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private PartyState partyState; // 모집 상태
 
     protected Party() {}

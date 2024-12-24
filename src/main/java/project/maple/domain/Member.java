@@ -1,12 +1,8 @@
 package project.maple.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +18,7 @@ public class Member {
     @NotNull(message = "아이디: 필수 정보입니다.")
     @Email(message = "이메일 형식이 아닙니다.")
     @Column(unique = true)
-    private String userEmail;
+    private String username;
 
     @NotNull(message = "비밀번호: 필수 정보입니다.")
 //    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@$!%*?&])[a-zA-Z\\d@$!%*?&]{8,16}&")
@@ -32,15 +28,21 @@ public class Member {
     @Column(unique = true)
     private String apiKey;
 
-    public Member(String userEmail, String userPass, String apiKey) {
-        this.userEmail = userEmail;
+//    @Enumerated(EnumType.STRING)
+//    private MemberRole role;
+    private String role;
+
+    public Member(String username, String userPass, String apiKey) {
+        this.id = id;
+        this.username = username;
         this.userPass = userPass;
         this.apiKey = apiKey;
+        this.role = "ROLE_USER";
     }
 
     /*
-    id만 사용한 멤버 생성자
-     */
+        id만 사용한 멤버 생성자
+         */
     public Member(Long id) {
         this.id = id;
     }

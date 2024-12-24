@@ -65,7 +65,7 @@ public class PartyService {
      */
     public boolean isPartyLeader(Long partyId, String userEmail) {
         Party findParty = partyRepository.findById(partyId).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 파티입니다."));
-        return findParty.getMember().getUserEmail().equals(userEmail);
+        return findParty.getMember().getUsername().equals(userEmail);
     }
 
     public void handleLeaderLeaving(Long partyId, String userEmail) {

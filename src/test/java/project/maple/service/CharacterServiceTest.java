@@ -29,7 +29,7 @@ class CharacterServiceTest {
         //given
 
         //when
-        List<CharacterListDto> myCharacters = characterService.getMyCharacters(new LoginSaveDto(email, apiKey));
+        List<CharacterListDto> myCharacters = characterService.getMyCharacters(apiKey);
 //        myCharacters.forEach(dto -> {
 //            System.out.println("ocid = " + dto.getOcid());
 //            System.out.println("Character_name = " + dto.getCharacter_name());

@@ -31,6 +31,7 @@ public class PartyMember {
     /*
     파티 승인 여부
      */
+    @Enumerated(EnumType.STRING)
     private ApprovalStatus status;
 
     protected PartyMember() {}

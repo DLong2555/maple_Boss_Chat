@@ -2,13 +2,14 @@ package project.maple.controller;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import project.maple.domain.Party;
-import project.maple.dto.member.LoginSaveDto;
+import project.maple.dto.CustomUserDetails;
 import project.maple.dto.PartyInfoDto;
 import project.maple.service.PartyService;
 
@@ -49,9 +50,10 @@ public class PartyController {
     파티 삭제
      */
     @PostMapping(value = "/party/{partyId}/delete")
-    public String deleteParty(@PathVariable Long partyId, HttpSession session) {
-        LoginSaveDto user = (LoginSaveDto) session.getAttribute("user");
-        String userEmail = user.getEmail();
+    public String deleteParty(@PathVariable Long partyId, Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
+
+        String userEmail = userDetails.getUsername();
         partyService.deleteParty(partyId, userEmail);
         return "redirect:/parties";
     }
