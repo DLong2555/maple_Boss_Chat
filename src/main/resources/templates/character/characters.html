@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::section})}" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>로그인 페이지</title>
+</head>
+<body>
+<section>
+    <div>
+        <table border="1">
+            <tr>
+                <td>캐릭터명</td>
+                <td>월드</td>
+                <td>직업</td>
+                <td>레벨</td>
+                <td>선택</td>
+            </tr>
+            <tr th:each="character, idx : ${charList}">
+                <td th:text="${character.getCharacter_name()}">
+                    <input type="hidden" name="chooseOcid" th:value="${character.getOcid()}">
+                    <input type="hidden" name="chooseChar" th:value="${character.getCharacter_name()}">
+                </td>
+                <td th:text="${character.getWorld_name()}"></td>
+                <td th:text="${character.getCharacter_class()}"></td>
+                <td th:text="${character.getCharacter_level()}"></td>
+                <td><input type="radio" name="character" th:checked="${idx.index == 0}"></td>
+            </tr>
+        </table>
+
+        <form th:action="@{/chooseCharacter}" method="post">
+        <button type="submit">접속</button>
+        </form>
+    </div>
+</section>
+</body>
+</html>

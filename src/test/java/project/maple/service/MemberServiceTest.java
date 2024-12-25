@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import project.maple.domain.Member;
 import project.maple.dto.member.JoinForm;
 import project.maple.dto.member.LoginForm;
-import project.maple.dto.member.LoginRequestDto;
 import project.maple.exception.DuplicateMemberException;
 import project.maple.repository.MemberRepository;
 

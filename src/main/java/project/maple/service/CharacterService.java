@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import project.maple.dto.character.CharacterListDto;
-import project.maple.dto.member.LoginSaveDto;
 import project.maple.dto.character.CharacterStatDto;
 import project.maple.dto.character.item.ItemEquipmentDto;
 
@@ -39,6 +38,7 @@ public class CharacterService {
         // 내 캐릭터 리스트 json -> CharacterListDto
         return getCharacterListDtos(myCharacters);
     }
+
 
     public List<CharacterListDto> getCharacterListDtos(JsonNode myCharacters) throws JsonProcessingException {
         mapper = new ObjectMapper();
