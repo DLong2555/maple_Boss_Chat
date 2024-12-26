@@ -23,7 +23,9 @@ public class PartyInfoDto {
 
     private PartyState partyState;
 
-    public PartyInfoDto(Long id, String partyName, String boss, Difficulty difficulty, List<String> applicants, int maxMemberCount, List<String> members, PartyState partyState) {
+    private String leaderName;
+
+    public PartyInfoDto(Long id, String partyName, String boss, Difficulty difficulty, List<String> applicants, int maxMemberCount, List<String> members, PartyState partyState, String leaderName) {
         this.id = id;
         this.partyName = partyName;
         this.boss = boss;
@@ -33,6 +35,7 @@ public class PartyInfoDto {
         this.maxMemberCount = maxMemberCount;
         this.members = members;
         this.partyState = partyState;
+        this.leaderName = leaderName;
     }
 
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout(~{::title}, ~{::script},~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>파티 생성 페이지</title>
+    <script></script>
+</head>
+<body>
+<section>
+    <form th:action="@{/party/create}" method="post" th:object="${partyForm}">
+    <div class="form-group">
+            <label th:for="text">파티명</label>
+            <input type="text" th:field="*{partyName}" class="form-control"
+                   placeholder="파티명을 입력하세요" th:class="${#fields.hasErrors('partyName')}? 'form-control fieldError' : 'form-control'">
+            <p th:if="${#fields.hasErrors('partyName')}" th:errors="*{partyName}"></p>
+        </div>
+
+        <div class="form-group">
+            <label th:for="text">보스</label>
+            <input type="text" th:field="*{boss}" class="form-control"
+                   placeholder="파티장은 비워둘 수 없느 항목입니다" th:class="${#fields.hasErrors('boss')}? 'form-control fieldError' : 'form-control'">
+            <p th:if="${#fields.hasErrors('boss')}" th:errors="*{boss}"></p>
+        </div>
+
+        <div class="form-group">
+            <label for="difficulty">난이도</label>
+            <select id="difficulty" th:field="*{difficulty}" class="form-control">
+                <option th:each="difficulty : ${T(project.maple.domain.Difficulty).values()}"
+                        th:value="${difficulty}"
+                        th:text="${difficulty}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label th:for="text">모집 인원</label>
+            <input type="text" th:field="*{maxMemberCount}" class="form-control"
+                   placeholder="파티장은 비워둘 수 없느 항목입니다" th:class="${#fields.hasErrors('maxMemberCount')}? 'form-control fieldError' : 'form-control'">
+            <p th:if="${#fields.hasErrors('maxMemberCount')}" th:errors="*{maxMemberCount}"></p>
+        </div>
+
+        <button type="submit" class="btn">생성</button>
+    </form>
+</section>
+</body>
+</html>

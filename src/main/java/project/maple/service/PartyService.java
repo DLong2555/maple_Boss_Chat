@@ -1,11 +1,15 @@
 package project.maple.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.maple.domain.ApprovalStatus;
+import project.maple.domain.Member;
 import project.maple.domain.Party;
 import project.maple.domain.PartyMember;
+import project.maple.dto.CustomUserDetails;
+import project.maple.dto.PartyForm;
 import project.maple.dto.PartyInfoDto;
 import project.maple.repository.PartyMemberRepository;
 import project.maple.repository.PartyRepository;
@@ -25,8 +29,14 @@ public class PartyService {
     파티 생성
      */
     @Transactional
-    public Party createParty(Party party) {
-        return partyRepository.save(party);
+    public Long createParty(PartyForm partyForm, CustomUserDetails userDetails) {
+        //Member member, String charName, String charOcid, String partyName, String boss, Difficulty difficulty, int maxMemberCount
+
+        Party party = new Party(userDetails.getMember(), userDetails.getCharName(), userDetails.getOcid(), partyForm.getPartyName(), partyForm.getBoss(), partyForm.getDifficulty(), partyForm.getMaxMemberCount());
+
+        partyRepository.save(party);
+
+        return party.getId();
     }
 
     /*
@@ -98,7 +108,8 @@ public class PartyService {
                 applicants,
                 party.getMaxMemberCount(),
                 members,
-                party.getPartyState()
+                party.getPartyState(),
+                party.getCharName()
         );
     }
 }
