@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import project.maple.dto.CustomUserDetails;
 import project.maple.dto.character.CharacterListDto;
 import project.maple.dto.character.ChooseCharInfo;
@@ -16,6 +17,7 @@ import project.maple.service.CharacterService;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -34,22 +36,26 @@ public class CharacterController {
             throw new IllegalArgumentException("저장된 정보가 없습니다.");
         }
 
-//        Set<String> worldSet = new HashSet<>();
+        Map<String, List<CharacterListDto>> myCharacters = characterService.getMyCharacters(userDetails.getUsername(), userDetails.getApiKey());
+//        for (String s : myCharacters.keySet()) {
+//            myCharacters.get(s).forEach(characterListDto -> {
+//                log.info("name = {}", characterListDto.getCharacter_name());
+//                log.info("world = {}", characterListDto.getWorld_name());
+//            });
+//        }
 
-        List<CharacterListDto> charList = characterService.getMyCharacters(userDetails.getApiKey());
-        if (!charList.isEmpty()) charList.forEach(dto -> {
-//            worldSet.add(dto.getWorld_name());
-            log.info("dto.getCharacter_name() = {}", dto.getCharacter_name());
-            log.info("dto.getCharacter_level() = {}", dto.getCharacter_level());
-            log.info("dto.getCharacter_class() = {}", dto.getCharacter_class());
-            log.info("dto.getWorld_name() = {}", dto.getWorld_name());
-        });
+        // 레벨 순 같으면 이름순으로 정렬
+        for (String world : myCharacters.keySet()) {
+            myCharacters.get(world).sort(((o1, o2) -> {
+                if (o2.getCharacter_level() == o1.getCharacter_level())
+                    return o1.getCharacter_name().compareTo(o2.getCharacter_name());
+                else return o2.getCharacter_level() - o1.getCharacter_level();
+            }));
+        }
 
-//        log.info("worldSet = {}", worldSet.toString());
-
-        model.addAttribute("charList", charList);
         model.addAttribute("chooseCharInfo", new ChooseCharInfo());
-//        model.addAttribute("worldSet", worldSet);
+        model.addAttribute("characterMap", myCharacters);
+        model.addAttribute("worldKeys", myCharacters.keySet());
 
         return "character/characters";
     }
@@ -64,25 +70,14 @@ public class CharacterController {
 
 //    @ResponseBody
 //    @GetMapping("/charactersTest")
-//    public List<CharacterListDto> characterListForm_test() throws JsonProcessingException {
+//    public Map<String, List<CharacterListDto>> characterListForm_test() throws JsonProcessingException {
 //
-//        String api = "live_321ceb3c90be2be8a91f57a57cd693885dda2a1520e5c4a68afad772a0b0b4b6b1c45db78d00a3de8004b92575b13372";
+//        String api1 = "live_321ceb3c90be2be8a91f57a57cd693885dda2a1520e5c4a68afad772a0b0b4b6b1c45db78d00a3de8004b92575b13372";
+//        String api2 = "test_c0f890b5cf97d7fb50a6c7e198a0201737fa23a015b6aa1f1c950850400ce9eeefe8d04e6d233bd35cf2fabdeb93fb0d";
 //
+//        Map<String, List<CharacterListDto>> myCharacters = characterService.getMyCharacters("testEmail", api1);
 //
-//        Set<String> worldSet = new HashSet<>();
-//
-//        List<CharacterListDto> charList = characterService.getMyCharacters(api);
-//        if (!charList.isEmpty()) charList.forEach(dto -> {
-//            worldSet.add(dto.getWorld_name());
-//            log.info("dto.getCharacter_name() = {}", dto.getCharacter_name());
-//            log.info("dto.getCharacter_level() = {}", dto.getCharacter_level());
-//            log.info("dto.getCharacter_class() = {}", dto.getCharacter_class());
-//            log.info("dto.getWorld_name() = {}", dto.getWorld_name());
-//        });
-//
-//        log.info("worldSet = {}", worldSet.toString());
-//
-//        return charList;
+//        return myCharacters;
 //    }
 
 }

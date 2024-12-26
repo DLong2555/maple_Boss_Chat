@@ -1,34 +1,46 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::section})}" xmlns:th="https://www.thymeleaf.org">
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::script},~{::section})}" xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>로그인 페이지</title>
+    <script>
+        function updateCharacterList() {
+            const selectedWorld = document.getElementById("worldSelect").value;
+            const characterLists = document.querySelectorAll(".character-list");
+
+            characterLists.forEach(list => {
+                if (list.dataset.world === selectedWorld || selectedWorld === "all") {
+                    list.style.display = "block";
+                } else {
+                    list.style.display = "none";
+                }
+            });
+        }
+    </script>
 </head>
 <body>
 <section>
-    <div>
-        <table border="1">
-            <tr>
-                <td>캐릭터명</td>
-                <td>월드</td>
-                <td>직업</td>
-                <td>레벨</td>
-                <td>선택</td>
-            </tr>
-            <tr th:each="character, idx : ${charList}">
-                <td th:text="${character.getCharacter_name()}">
-                    <input type="hidden" name="chooseOcid" th:value="${character.getOcid()}">
-                    <input type="hidden" name="chooseChar" th:value="${character.getCharacter_name()}">
-                </td>
-                <td th:text="${character.getWorld_name()}"></td>
-                <td th:text="${character.getCharacter_class()}"></td>
-                <td th:text="${character.getCharacter_level()}"></td>
-                <td><input type="radio" name="character" th:checked="${idx.index == 0}"></td>
-            </tr>
-        </table>
+    <select id="worldSelect" onchange="updateCharacterList()">
+        <option value="all">All</option>
+        <option th:each="key : ${worldKeys}" th:value="${key}" th:text="${key}"></option>
+    </select>
 
-        <form th:action="@{/chooseCharacter}" method="post">
-        <button type="submit">접속</button>
-        </form>
+    <div>
+        <!-- Character Lists -->
+        <div th:each="entry : ${characterMap}"
+             th:attr="data-world=${entry.key}"
+             class="character-list"
+             style="display: block;">
+            <h2>World: <span th:text="${entry.key}"></span></h2>
+            <ul>
+                <li th:each="character : ${entry.value}">
+                    Image: <img th:src="${character.character_image}" th:alt="${character.character_name}">,
+                    Name: <span th:text="${character.character_name}"></span>,
+                    Class: <span th:text="${character.character_class}"></span>,
+                    Level: <span th:text="${character.character_level}"></span>,
+                    Guild: <span th:text="${character.character_guild_name}"></span>,
+                </li>
+            </ul>
+        </div>
     </div>
 </section>
 </body>

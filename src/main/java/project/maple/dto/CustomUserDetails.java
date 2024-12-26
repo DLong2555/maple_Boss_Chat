@@ -14,6 +14,9 @@ public class CustomUserDetails implements UserDetails {
     private Member member;
     private String charName;
     private String ocid;
+    private String world_name;
+    private String character_image;
+    private String character_guild_name;
 
     public CustomUserDetails(Member member) {
         this.member = member;

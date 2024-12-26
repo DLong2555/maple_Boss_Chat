@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html th:fragment="layout (title, content)" xmlns:th="http://www.thymeleaf.org">
+<html th:fragment="layout (title, script, content)" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:replace="${title}">레이아웃 타이틀</title>
+    <script th:replace="${script}"></script>
 </head>
 <body>
 <div th:replace="${content}">

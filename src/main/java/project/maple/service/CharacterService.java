@@ -15,6 +15,7 @@ import project.maple.dto.character.item.ItemEquipmentDto;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Service
@@ -29,14 +30,52 @@ public class CharacterService {
     /**
      * 캐릭터 리스트 조회
      */
-    @Cacheable(cacheNames = "getCharacters", key = "'character_list'", cacheManager = "charactersCacheManager")
-    public List<CharacterListDto> getMyCharacters(String apiKey) throws JsonProcessingException {
+    @Cacheable(cacheNames = "getCharacters", key = "#username", cacheManager = "charactersCacheManager")
+    public Map<String,List<CharacterListDto>> getMyCharacters(String username, String apiKey) throws JsonProcessingException {
 
         // Json으로 내 캐릭터 리스트 가져오기
         JsonNode myCharacters = getMyCharactersJSON(apiKey, "/maplestory/v1/character/list", null);
 
+        HashMap<String, List<CharacterListDto>> myCharMap = new HashMap<>();
+
         // 내 캐릭터 리스트 json -> CharacterListDto
-        return getCharacterListDtos(myCharacters);
+        List<CharacterListDto> characterListDtos = getCharacterListDtos(myCharacters);
+
+        // CompletableFuture로 비동기 처리
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        for (CharacterListDto characterListDto : characterListDtos) {
+            if(myCharMap.get(characterListDto.getWorld_name()) == null) {
+                myCharMap.put(characterListDto.getWorld_name(), new ArrayList<CharacterListDto>());
+            }
+
+            Map<String, String> params = new HashMap<>();
+            params.put("ocid", characterListDto.getOcid());
+
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                try {
+                    JsonNode charBasicData = getMyCharactersJSON(apiKey, "/maplestory/v1/character/basic", params);
+
+                    characterListDto.setCharacter_guild_name(charBasicData.get("character_guild_name").asText());
+                    characterListDto.setCharacter_image(charBasicData.get("character_image").asText());
+
+                } catch (Exception e) {
+                    log.info("No data found for character: {}", characterListDto.getCharacter_name());
+                    log.error("No data found for ocid: {}", characterListDto.getOcid());
+                    log.error(e.getMessage());
+                }finally {
+                    synchronized (myCharMap) {  // 동기화하여 ConcurrentModificationException 방지
+                        myCharMap.get(characterListDto.getWorld_name()).add(characterListDto);
+                    }
+                }
+            });
+
+            futures.add(future);
+        }
+
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+        return myCharMap;
     }
 
 
@@ -51,11 +90,11 @@ public class CharacterService {
         );
 
         // 레벨 순 같으면 이름순으로 정렬
-        characterList.sort(((o1, o2) -> {
-            if (o2.getCharacter_level() == o1.getCharacter_level())
-                return o1.getCharacter_name().compareTo(o2.getCharacter_name());
-            else return o2.getCharacter_level() - o1.getCharacter_level();
-        }));
+//        characterList.sort(((o1, o2) -> {
+//            if (o2.getCharacter_level() == o1.getCharacter_level())
+//                return o1.getCharacter_name().compareTo(o2.getCharacter_name());
+//            else return o2.getCharacter_level() - o1.getCharacter_level();
+//        }));
         return characterList;
     }
 
@@ -104,7 +143,7 @@ public class CharacterService {
         JsonNode myCharactersJSON = getMyCharactersJSON(admin_api_key, "/maplestory/v1/character/item-equipment", params);
         Map<String, List<ItemEquipmentDto>> itemEquipmentMap = new HashMap<>();
 
-        for(int i = 1; i <= 3; i++) {
+        for (int i = 1; i <= 3; i++) {
             String preset = "item_equipment_preset_" + i;
             ArrayList<ItemEquipmentDto> itemEquipmentPreset = mapper.convertValue(
                     myCharactersJSON.findValue(preset),

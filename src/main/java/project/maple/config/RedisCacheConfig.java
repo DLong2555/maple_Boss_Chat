@@ -34,7 +34,9 @@ public class RedisCacheConfig {
                 .serializeValuesWith(
                         RedisSerializationContext.SerializationPair.fromSerializer(serializer)
                 )
-                .entryTtl(Duration.ofMinutes(15));
+                .entryTtl(Duration.ofMinutes(15))
+                .disableCachingNullValues();
+
 
         return RedisCacheManager
                 .RedisCacheManagerBuilder
