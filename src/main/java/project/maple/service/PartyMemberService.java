@@ -63,15 +63,13 @@ public class PartyMemberService {
     가입 거절
      */
     @Transactional
-    public PartyMemberDto rejectMember (Long partyId, String memberEmail) {
-
-        Long findMemberId = memberService.findMemberIdByEmail(memberEmail);
+    public PartyMemberDto rejectMember (Long partyId, Long applicantId, String memberEmail) {
 
         if (!partyService.isPartyLeader(partyId, memberEmail)) {
             throw new IllegalStateException("파티 리더만 가입을 거절할 수 있습니다.");
         }
 
-        PartyMember partyMember = partyMemberRepository.findByPartyIdAndMemberId(partyId, findMemberId)
+        PartyMember partyMember = partyMemberRepository.findByPartyIdAndMemberId(partyId, applicantId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
         partyMember.reject();
         partyMemberRepository.save(partyMember);

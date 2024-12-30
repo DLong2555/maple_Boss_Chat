@@ -41,11 +41,10 @@ public class PartyMemberController {
     /*
     파티 거절
      */
-    @PostMapping(value = "/party/{partyId}/reject")
-    public String rejectToParty(@PathVariable Long partyId, Authentication authentication) {
+    @PostMapping(value = "/party/{partyId}/{applicantId}/reject")
+    public String rejectToParty(@PathVariable Long partyId, Authentication authentication, @PathVariable Long applicantId) {
         CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
-
-        partyMemberService.rejectMember(partyId, userDetails.getUsername());
+        partyMemberService.rejectMember(partyId, applicantId, userDetails.getUsername());
         return "redirect:/party/parties";
     }
 
