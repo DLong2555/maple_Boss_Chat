@@ -14,6 +14,23 @@
                     list.style.display = "none";
                 }
             });
+
+        }
+
+        function setSelectedCharacter(){
+            const selectedCharacter = document.querySelector("input[name='selected_char']:checked");
+            if (selectedCharacter){
+                console.log(`${selectedCharacter.value}`);
+
+                const charName = selectedCharacter.value;
+                const ocid = selectedCharacter.previousElementSibling.value;
+
+                document.getElementById("charNameField").value = charName
+                document.getElementById("ocidField").value = ocid
+
+                console.log(document.getElementById("charNameField").value);
+                console.log(document.getElementById("ocidField").value);
+            }
         }
     </script>
 </head>
@@ -38,9 +55,17 @@
                     Class: <span th:text="${character.character_class}"></span>,
                     Level: <span th:text="${character.character_level}"></span>,
                     Guild: <span th:text="${character.character_guild_name}"></span>,
+                    <input type="hidden" th:value="${character.ocid}">
+                    <input type="radio" name="selected_char" th:value="${character.character_name}" onchange="setSelectedCharacter()">
                 </li>
             </ul>
         </div>
+
+        <form th:action="@{/select}" method="post" th:object="${chooseCharInfo}">
+            <input type="hidden" id="charNameField" th:field="*{charName}" value="">
+            <input type="hidden" id="ocidField" th:field="*{ocid}" value="">
+            <button type="submit">선택</button>
+        </form>
     </div>
 </section>
 </body>

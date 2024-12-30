@@ -60,12 +60,16 @@ public class CharacterController {
         return "character/characters";
     }
 
-    @PostMapping("/characters")
+    @PostMapping("/select")
     public String chooseCharacter(@Valid ChooseCharInfo charInfo, Authentication authentication) {
+
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         userDetails.setNowCharInfo(charInfo.getCharName(), charInfo.getOcid());
 
-        return "/";
+        log.info("charName = {}", userDetails.getCharName());
+        log.info("charOcid = {}", userDetails.getOcid());
+
+        return "redirect:/";
     }
 
 //    @ResponseBody
