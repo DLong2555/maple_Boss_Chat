@@ -26,7 +26,7 @@ public class PartyMemberController {
         String nowCharName = userDetails.getCharName();
 
         partyMemberService.applyToParty(partyId, userEmail, nowCharName, nowCharOcid);
-        return "redirect:/parties";
+        return "redirect:/party/parties";
     }
     /*
     파티 승인
@@ -35,7 +35,7 @@ public class PartyMemberController {
     public String approveToParty(@PathVariable Long partyId, Authentication authentication) {
         CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
         partyMemberService.approveMember(partyId, userDetails.getUsername());
-        return "redirect:/parties";
+        return "redirect:/party/parties";
     }
 
     /*
@@ -46,7 +46,7 @@ public class PartyMemberController {
         CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
 
         partyMemberService.rejectMember(partyId, userDetails.getUsername());
-        return "redirect:/parties";
+        return "redirect:/party/parties";
     }
 
     /*
@@ -57,6 +57,6 @@ public class PartyMemberController {
         CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
 
         partyMemberService.leaveParty(partyId, userDetails.getUsername());
-        return "redirect:/parties";
+        return "redirect:/party/parties";
     }
 }

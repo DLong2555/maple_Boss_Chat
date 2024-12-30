@@ -1,6 +1,5 @@
 package project.maple.controller;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,11 +10,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import project.maple.domain.Party;
 import project.maple.dto.CustomUserDetails;
 import project.maple.dto.PartyForm;
 import project.maple.dto.PartyInfoDto;
-import project.maple.dto.member.LoginForm;
 import project.maple.service.PartyService;
 
 import java.util.List;
@@ -29,18 +26,18 @@ public class PartyController {
     /*
     파티 조회
      */
-    @GetMapping(value = "/parties")
+    @GetMapping(value = "/party/parties")
     public String getParties(Model model) {
         List<PartyInfoDto> parties = partyService.findParties();
         model.addAttribute("parties", parties);
-        return "parties";
+        return "party/parties";
     }
 
     @GetMapping(value = "/party/{partyId}")
     public String getParty(Model model, @PathVariable Long partyId) {
         PartyInfoDto party = partyService.findById(partyId);
         model.addAttribute("party", party);
-        return "partyDetail";
+        return "/party/partyDetail";
     }
 
     /*
