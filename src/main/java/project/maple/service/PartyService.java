@@ -11,6 +11,7 @@ import project.maple.domain.PartyMember;
 import project.maple.dto.CustomUserDetails;
 import project.maple.dto.PartyForm;
 import project.maple.dto.PartyInfoDto;
+import project.maple.dto.PartyMemberDto;
 import project.maple.repository.PartyMemberRepository;
 import project.maple.repository.PartyRepository;
 
@@ -64,7 +65,7 @@ public class PartyService {
      */
     @Transactional
     public void deleteParty(Long partyId, String userEmail) {
-        if (isPartyLeader(partyId, userEmail)) {
+        if (!isPartyLeader(partyId, userEmail)) {
             throw new IllegalArgumentException("파티장만 파티를 삭제할 수 있습니다.");
         }
         partyRepository.deleteById(partyId);
@@ -90,14 +91,24 @@ public class PartyService {
     }
 
     public PartyInfoDto convertToDto(Party party) {
-        List<String> members = partyMemberRepository.findByPartyAndStatus(party, ApprovalStatus.APPROVED)
+        List<PartyMemberDto> members = partyMemberRepository.findByPartyAndStatus(party, ApprovalStatus.APPROVED)
                 .stream()
-                .map(PartyMember::getCharName)
+                .map(partyMember -> new PartyMemberDto(
+                partyMember.getId(),
+                partyMember.getCharName(),
+                partyMember.getCharOcid(),
+                partyMember.getStatus()
+        ))
                 .collect(Collectors.toList());
 
-        List<String> applicants = partyMemberRepository.findByPartyAndStatus(party, ApprovalStatus.PENDING)
+        List<PartyMemberDto> applicants = partyMemberRepository.findByPartyAndStatus(party, ApprovalStatus.PENDING)
                 .stream()
-                .map(PartyMember::getCharName)
+                .map(partyMember -> new PartyMemberDto(
+                        partyMember.getId(),
+                        partyMember.getCharName(),
+                        partyMember.getCharOcid(),
+                        partyMember.getStatus()
+                ))
                 .collect(Collectors.toList());
 
         return new PartyInfoDto(

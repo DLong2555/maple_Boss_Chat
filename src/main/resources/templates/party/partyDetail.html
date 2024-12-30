@@ -3,6 +3,52 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>파티 상세 정보</title>
+    <script>
+        function joinParty(partyId) {
+            fetch(`/party/${partyId}/join`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if(response.ok) {
+                        alert("파티에 성공적으로 신청했습니다.");
+                        window.location.reload();
+                    } else {
+                        alert("신청 중 오류가 발생했습니다.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error : ', error);
+                    alert("서버와의 통신 중 문제가 발생했습니다.");
+                })
+        }
+        function handleApproveButtonClick(applicantId, partyId) {
+            fetch(`/party/${partyId}/${applicantId}/approve`, {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if(response.ok) {
+                        alert("파티에 신청을 수락하였습니다.");
+                        window.location.reload();
+                    } else {
+                        alert("신청 중 오류가 발생했습니다.");
+                    }
+                })
+                .catch(error => {
+                    console.error('Error : ', error);
+                    alert("서버와의 통신 중 문제가 발생했습니다.");
+                })
+        }
+        function handleRejectButtonClick(applicantId) {
+            alert(applicantId + "선택");
+            console.log("선택");
+        }
+    </script>
 </head>
 <body>
     <h1>파티 상세 정보</h1>
@@ -14,14 +60,20 @@
 
     <h2>파티 신청자</h2>
     <ul>
-        <li th:each="applicant : ${party.getApplicants()}" th:text="${applicant}"></li>
+        <li th:each="applicant : ${party.getApplicants()}">
+            <span th:text="${applicant.getCharName()}"></span>
+            <div th:if="${isPartyLeader}">
+                <button type="button" th:onclick="'handleApproveButtonClick(' + ${applicant.getId()} + ', ' + ${party.getId()} + ')'">수락</button>
+                <button type="button" th:onclick="'handleRejectButtonClick(' + ${applicant.getId()} + ')'">거절</button>
+            </div>
+        </li>
     </ul>
 
     <h2>파티원</h2>
     <ul>
         <li th:each="member : ${party.getMembers()}" th:text="${member}"></li>
     </ul>
-
-    <a th:href="@{/parties}">목록으로 돌아가기</a>
+    <button type="button" th:onclick="'joinParty(' + ${party.getId()} + ')'">파티 신청</button>
+    <a th:href="@{/party/parties}">목록으로 돌아가기</a>
 </body>
 </html>

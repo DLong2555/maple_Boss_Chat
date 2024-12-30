@@ -16,16 +16,16 @@ public class PartyInfoDto {
     private Difficulty difficulty;
 
     private int currentMemberCount;
-    private List<String> applicants; // 신청자 리스트
+    private List<PartyMemberDto> applicants; // 신청자 리스트
 
     private int maxMemberCount;
-    private List<String> members; // 승인된 파티원 리스트
+    private List<PartyMemberDto> members; // 승인된 파티원 리스트
 
     private PartyState partyState;
 
     private String leaderName;
 
-    public PartyInfoDto(Long id, String partyName, String boss, Difficulty difficulty, List<String> applicants, int maxMemberCount, List<String> members, PartyState partyState, String leaderName) {
+    public PartyInfoDto(Long id, String partyName, String boss, Difficulty difficulty, List<PartyMemberDto> applicants, int maxMemberCount, List<PartyMemberDto> members, PartyState partyState, String leaderName) {
         this.id = id;
         this.partyName = partyName;
         this.boss = boss;

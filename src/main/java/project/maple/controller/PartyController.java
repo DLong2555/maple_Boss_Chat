@@ -34,9 +34,15 @@ public class PartyController {
     }
 
     @GetMapping(value = "/party/{partyId}")
-    public String getParty(Model model, @PathVariable Long partyId) {
+    public String getParty(@PathVariable Long partyId, Model model, Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         PartyInfoDto party = partyService.findById(partyId);
+
+        boolean isPartyLeader = partyService.isPartyLeader(partyId, userDetails.getUsername());
+
         model.addAttribute("party", party);
+        model.addAttribute("isPartyLeader", isPartyLeader);
+
         return "/party/partyDetail";
     }
 

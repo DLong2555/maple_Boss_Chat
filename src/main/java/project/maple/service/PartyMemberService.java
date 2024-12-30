@@ -45,15 +45,13 @@ public class PartyMemberService {
     가입 승인
      */
     @Transactional
-    public PartyMemberDto approveMember (Long partyId, String memberEmail) {
+    public PartyMemberDto approveMember (Long partyId, Long applicantId, String memberEmail) {
 
-        Long findMemberId = memberService.findMemberIdByEmail(memberEmail);
-
-        if (partyService.isPartyLeader(partyId, memberEmail)) {
+        if (!partyService.isPartyLeader(partyId, memberEmail)) {
             throw new IllegalStateException("파티 리더만 가입을 승인할 수 있습니다.");
         }
 
-        PartyMember partyMember = partyMemberRepository.findByPartyIdAndMemberId(partyId, findMemberId)
+        PartyMember partyMember = partyMemberRepository.findByPartyIdAndMemberId(partyId, applicantId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
         partyMember.approve();
         partyMemberRepository.save(partyMember);
@@ -69,7 +67,7 @@ public class PartyMemberService {
 
         Long findMemberId = memberService.findMemberIdByEmail(memberEmail);
 
-        if (partyService.isPartyLeader(partyId, memberEmail)) {
+        if (!partyService.isPartyLeader(partyId, memberEmail)) {
             throw new IllegalStateException("파티 리더만 가입을 거절할 수 있습니다.");
         }
 
@@ -94,7 +92,7 @@ public class PartyMemberService {
          partyMemberRepository.delete(partyMember);
 
          //파티장일 경우 파티를 삭제함.
-         if (partyService.isPartyLeader(partyId, memberEmail)) {
+         if (!partyService.isPartyLeader(partyId, memberEmail)) {
              partyService.handleLeaderLeaving(partyId, memberEmail);
          }
      }

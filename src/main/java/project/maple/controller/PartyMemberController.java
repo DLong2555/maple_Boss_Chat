@@ -31,10 +31,10 @@ public class PartyMemberController {
     /*
     파티 승인
      */
-    @PostMapping(value = "/party/{partyId}/approve")
-    public String approveToParty(@PathVariable Long partyId, Authentication authentication) {
+    @PostMapping(value = "/party/{partyId}/{applicantId}/approve")
+    public String approveToParty(@PathVariable Long partyId, Authentication authentication, @PathVariable Long applicantId) {
         CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
-        partyMemberService.approveMember(partyId, userDetails.getUsername());
+        partyMemberService.approveMember(partyId, applicantId, userDetails.getUsername());
         return "redirect:/party/parties";
     }
 
