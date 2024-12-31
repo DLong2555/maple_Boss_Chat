@@ -40,7 +40,11 @@ public class SecurityConfig {
         http
                 .formLogin((auth) -> auth.loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/"))
+                .logout((logout) -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true)
                 );
 
         http
