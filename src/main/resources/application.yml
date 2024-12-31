@@ -18,6 +18,12 @@ spring:
 #        show_sql: true
         format_sql: true
 
+  devtools:
+    restart:
+      enabled: true
+
+  thymeleaf:
+    cache: false
 
 logging:
   level:
